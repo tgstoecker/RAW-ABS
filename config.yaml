@@ -1,0 +1,14 @@
+trimming:
+  
+  
+ref:
+  # the STAR index
+  index: "path/to/star/index"
+  # gtf file with transcripts
+  annotation: "path/to/annotation.gtf"
+
+
+params:
+  star: ""
+  trimmomatic: ""
+  trimmomatic: ""
