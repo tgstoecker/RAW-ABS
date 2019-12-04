@@ -5,6 +5,10 @@ alignment based (could also have second version that functions "alignment free" 
 
 using Snakemake and an elaborate YAML or JSON file to control all options
 
+sample data - phytophtara infestans
+`wget ftp://ftp.ensemblgenomes.org/pub/protists/release-45/fasta/phytophthora_infestans/dna/Phytophthora_infestans.ASM14294v1.dna.toplevel.fa.gz`
+
+
 - FastQC on RawReads
 - adapter removal (probably easiest use when I just include a directory where a adapter fasta should be put) /
 - Trimming (switch to sth. better than trimmomatic?)
