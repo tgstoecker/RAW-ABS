@@ -1,6 +1,6 @@
 rule star_index:
     input:
-        fasta = "{genome}.fasta"
+        fasta = "FGS/{genome}.fasta"
     output:
         directory("{genome}")
     message:
