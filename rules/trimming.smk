@@ -3,8 +3,8 @@ def get_fastq(wildcards):
     
  rule trimmomatic_PE:
     input:
-        r1="reads/{sample}.1.fastq.gz",
-        r2="reads/{sample}.2.fastq.gz"
+        r1="rawreads/{sample}.1.fastq.gz",
+        r2="rawreads/{sample}.2.fastq.gz"
     output:
         r1="trimmed/{sample}.1.fastq.gz",
         r2="trimmed/{sample}.2.fastq.gz",
@@ -27,7 +27,7 @@ def get_fastq(wildcards):
 
 rule trimmomatic_SE:
     input:
-        "reads/{sample}.fastq.gz"  # input and output can be uncompressed or compressed
+        "rawreads/{sample}.fastq.gz"  # input and output can be uncompressed or compressed
     output:
         "trimmed/{sample}.fastq.gz"
     log:
