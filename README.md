@@ -7,6 +7,9 @@ using Snakemake and an elaborate YAML or JSON file to control all options
 
 sample data - phytophtara infestans
 `wget ftp://ftp.ensemblgenomes.org/pub/protists/release-45/fasta/phytophthora_infestans/dna/Phytophthora_infestans.ASM14294v1.dna.toplevel.fa.gz`
+
+`wget ftp://ftp.ensemblgenomes.org/pub/protists/release-45/gtf/phytophthora_infestans/Phytophthora_infestans.ASM14294v1.45.gtf.gz`
+
 `fastq-dump --split-files https://sra-download.ncbi.nlm.nih.gov/traces/dra2/DRR/000156/DRR160421`
 
 
