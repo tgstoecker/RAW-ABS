@@ -25,13 +25,13 @@ The included environment.yaml file can be used to install all required software 
 Activating the environment
 To activate the snakemake-tutorial environment, execute
 
-`conda activate nakemake-R-A-B-P`
+`conda activate snakemake-R-A-B-P`
 
 Now you can use the installed tools and our workflow without any software dependency issues.
 For detailed options of snakemake see: 
 
 Should you want to remove the conda environment, execute
-`conda env remove -n nakemake-R-A-B-P`
+`conda env remove -n snakemake-R-A-B-P`
 
 
 using Snakemake and an elaborate YAML or JSON file to control all options
