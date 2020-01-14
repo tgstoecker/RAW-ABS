@@ -8,4 +8,7 @@ dependencies:
   - multiqc =1.7
   - trimmomatic =0.38
   - star =2.7.3a
+  - picard =2.18.7
   - samtools =1.9
+  - subread =1.6.4
+
