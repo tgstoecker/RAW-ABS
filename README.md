@@ -1,5 +1,6 @@
 # RNA-seq-analysis-workflow-alignment-based
-RNA-seq analysis workflow (alignment based)
+RNA-seq analysis workflow (alignment based) = RAW_AB
+
 
 alignment based (could also have second version that functions "alignment free" so e.g. salmon - however since these are all based on aligning to a transcriptome index -> sth. like my trinity workflow or stringtie would be necessary excluding cases, where a reference actually exist and we choose not to use it for some reason..)
 
