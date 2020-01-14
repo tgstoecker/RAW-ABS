@@ -1,14 +1,29 @@
-trimming:
-  
-  
-ref:
-  # the STAR index
-  index: "path/to/star/index"
-  # gtf file with transcripts
-  annotation: "path/to/annotation.gtf"
+genome: Phytophthora_infestans.ASM14294v1.dna.toplevel
+annotation: Phytophthora_infestans.ASM14294v1.45
+
+#### Single end or Paired end ####
+### choose either SE or PE in the following option ###
+
+#sequencing_type: "single_end"
+sequencing_type: "paired_end"
 
 
-params:
-  star: ""
-  trimmomatic: ""
-  trimmomatic: ""
+#### define options of your individual rules here: #####
+### number of maximum threads for each run of sample during a specfifc rule: ###
+### for fastqc and trimmomatic the the thread usage is put to 2 and 4 respectively - IMO best in most cases ###
+
+threads_star_index: "4"
+threads_star: "4"
+threads_index_sorted_bams_with_dups: "4"
+threads_index_sorted_bams_without_dups: "4"
+
+
+### other options for the individual rules; in order of the Snakefile ###
+
+### Trimmomatic
+trim.options: "SLIDINGWINDOW:4:20"
+
+### STAR
+##change STAR's --sjdbOverhang option; ideal value here is read_length-1
+##e.g.: 2x100b paired-end reads, the ideal value is 100-1=99; varying length? then, do this with the max length
+read_length_star_index: "99"
