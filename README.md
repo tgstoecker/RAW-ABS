@@ -1,4 +1,4 @@
-# RAW-ABS - RNAseq Analysis Workflow Alignment BaSed 
+# RAW-ABS - RNAseq Analysis Workflow, Alignment BaSed 
 Alignment based workflow for Illumina Short reads
 
 
