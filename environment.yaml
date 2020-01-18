@@ -3,6 +3,8 @@ channels:
   - conda-forge
 dependencies:
   - snakemake-minimal =5.7.0
+  - bbmap =38.75
+  - bedtools =2.29.2
   - pigz =2.4
   - fastqc =0.11.8
   - multiqc =1.7
