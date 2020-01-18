@@ -1,5 +1,5 @@
-# RNA-seq-analysis-workflow-alignment-based
-RNA-seq analysis workflow (alignment based) for Illumina Short reads = RAW-ABS
+# RAW-ABS - RNAseq Analysis Workflow Alignment BaSed 
+Alignment based workflow for Illumina Short reads
 
 
 alignment based (could also have second version that functions "alignment free" so e.g. salmon - however since these are all based on aligning to a transcriptome index -> sth. like my trinity workflow or stringtie would be necessary excluding cases, where a reference actually exist and we choose not to use it for some reason..)
@@ -21,18 +21,18 @@ Download/Clone the current release of the MuWU pipeline into the directory.
 
 The included environment.yaml file can be used to install all required software into an isolated Conda environment with a name of your choice - in the following we will call it "snakemake-MuWU":
 
-`conda env create --name snakemake-R-A-B-P --file environment.yaml`
+`conda env create --name RAW-ABS --file environment.yaml`
 
 Activating the environment
 To activate the snakemake-tutorial environment, execute
 
-`conda activate snakemake-R-A-B-P`
+`conda activate RAW-ABS`
 
 Now you can use the installed tools and our workflow without any software dependency issues.
 For detailed options of snakemake see: 
 
 Should you want to remove the conda environment, execute
-`conda env remove -n snakemake-R-A-B-P`
+`conda env remove -n RAW-ABS`
 
 
 using Snakemake and an elaborate YAML or JSON file to control all options
