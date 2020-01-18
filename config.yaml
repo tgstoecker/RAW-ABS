@@ -1,5 +1,5 @@
-genome: Phytophthora_infestans.ASM14294v1.dna.toplevel
-annotation: Phytophthora_infestans.ASM14294v1.45
+genome: Hordeum_vulgare.IBSC_v2.dna.toplevel
+annotation: Hordeum_vulgare.IBSC_v2.42
 
 #### Single end or Paired end ####
 ### choose either SE or PE in the following option ###
@@ -7,23 +7,65 @@ annotation: Phytophthora_infestans.ASM14294v1.45
 #sequencing_type: "single_end"
 sequencing_type: "paired_end"
 
+### define format of the files by uncommenting the appropriate file  ###
+#sample_names: "rawreads/{sample}.fq.gz"
+sample_names: "rawreads/{sample}_1.fq.gz"
+
 
 #### define options of your individual rules here: #####
 ### number of maximum threads for each run of sample during a specfifc rule: ###
 ### for fastqc and trimmomatic the the thread usage is put to 2 and 4 respectively - IMO best in most cases ###
 
+threads_bbduk: "2"
 threads_star_index: "4"
 threads_star: "4"
 threads_index_sorted_bams_with_dups: "4"
 threads_index_sorted_bams_without_dups: "4"
 
 
+### this workflow creates csi indexes because I usually work with larger genomes  ###
+### if bai indexes are specifically needed then: ###
+## 1.) go into the Snakefile and change .csi entries to .bai under rule all  ###
+## 2.) do the same to the two index steps at the end of the file and also change samtools index flag -c into -b  ##
+
+
+### concerning the final report, be aware that the featureCounts info is based on the gene level counts without multimappers and dups!  ###
+
+
 ### other options for the individual rules; in order of the Snakefile ###
+
+##BBduk
+kmer_length: "27"
 
 ### Trimmomatic
 trim.options: "SLIDINGWINDOW:4:20"
 
 ### STAR
+## default parameters change these to your specific needs
+
 ##change STAR's --sjdbOverhang option; ideal value here is read_length-1
 ##e.g.: 2x100b paired-end reads, the ideal value is 100-1=99; varying length? then, do this with the max length
 read_length_star_index: "99"
+
+#parameters when running before circtools 
+outReadsUnmapped: "Fastx"
+outSAMattributes: "NH   HI   AS   nM   NM   MD   jM   jI   XS"
+outSJfilterOverhangMin: "15   15   15   15"
+outFilterMultimapNmax: "20"
+outFilterScoreMin: "1"
+outFilterMatchNminOverLread: "0.7"
+outFilterMismatchNmax: "999"
+outFilterMismatchNoverLmax: "0.05"
+alignIntronMin: "20"
+alignIntronMax: "1000000"
+alignMatesGapMax: "1000000"
+alignSJoverhangMin: "15"
+alignSJDBoverhangMin: "10"
+alignSoftClipAtReferenceEnds: "No"
+chimSegmentMin: "15"
+chimScoreMin: "15"
+chimScoreSeparation: "10"
+chimJunctionOverhangMin: "15"
+quantMode: "GeneCounts"
+twopassMode: "Basic"
+chimOutType: "Junctions SeparateSAMold"
