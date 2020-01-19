@@ -37,6 +37,8 @@ Should you want to remove the conda environment, execute
 
 using Snakemake and an elaborate YAML or JSON file to control all options
 
+just linking to the input files is enough - no need to copy!
+
 sample data - phytophtara infestans
 `wget ftp://ftp.ensemblgenomes.org/pub/protists/release-45/fasta/phytophthora_infestans/dna/Phytophthora_infestans.ASM14294v1.dna.toplevel.fa.gz`
 
@@ -44,7 +46,7 @@ sample data - phytophtara infestans
 
 `fastq-dump --split-files https://sra-download.ncbi.nlm.nih.gov/traces/dra2/DRR/000156/DRR160421`
 
-
+# What it does:
 - FastQC on RawReads
 - adapter removal (probably easiest use when I just include a directory where a adapter fasta should be put) /
 - Trimming (switch to sth. better than trimmomatic?)
