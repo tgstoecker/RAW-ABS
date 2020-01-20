@@ -19,7 +19,7 @@ First, create a new directory and change into that directory in your terminal.
 
 Download/Clone the current release of the MuWU pipeline into the directory.
 
-The included environment.yaml file can be used to install all required software into an isolated Conda environment with a name of your choice - in the following we will call it "snakemake-MuWU":
+The included environment.yaml file can be used to install all required software into an isolated Conda environment with a name of your choice - in the following we will call it "RAW-ABS":
 
 `conda env create --name RAW-ABS --file environment.yaml`
 
@@ -34,26 +34,19 @@ For detailed options of snakemake see:
 Should you want to remove the conda environment, execute
 `conda env remove -n RAW-ABS`
 
-
-using Snakemake and an elaborate YAML or JSON file to control all options
-
-just linking to the input files is enough - no need to copy!
-
-sample data - phytophtara infestans
-`wget ftp://ftp.ensemblgenomes.org/pub/protists/release-45/fasta/phytophthora_infestans/dna/Phytophthora_infestans.ASM14294v1.dna.toplevel.fa.gz`
-
-`wget ftp://ftp.ensemblgenomes.org/pub/protists/release-45/gtf/phytophthora_infestans/Phytophthora_infestans.ASM14294v1.45.gtf.gz`
-
-`fastq-dump --split-files https://sra-download.ncbi.nlm.nih.gov/traces/dra2/DRR/000156/DRR160421`
+# Usage:
+1) Move, copy or link fasta and gtf of your species into the FGS directory
+2) Move, copy or link your gzipped fastq files to the rawreads directory
+3) All options of the workflow can easily be controlled via the config.yaml file
+  - rename your fastq files to follow the naming scheme: xxxx_1.fq.gz for PE reads!
+4) When all this is done execute `snakemake -np` to check if the workflow works and perform a dry-run
+5) TO start the workflow execute `snakemake --cores xx` and set the total amount of threads to be used
 
 # What it does:
-- FastQC on RawReads
-- adapter removal (probably easiest use when I just include a directory where a adapter fasta should be put) /
-- Trimming (switch to sth. better than trimmomatic?)
-- FastQC on Trimmed Reads
-- keep fastq_screen "database" and perform screening of all samples
-- get rRNA contamination statistics using bbduk.sh (further stuff?)
-- alignment/mapping: STAR (including index) - output directly to sorted bam with option to have sam/use sambamba?
+- Removal of rRNA reads via bbduk
+- FastQC on rRNA depleted RawReads
+- Trimming and FastQC on these trimmed Reads
+- alignment/mapping via STAR (including index) - outputs directly to sorted bam
 - featureCounts on alignment files
-- multiqc (remember e.g. gastq_screen multiqc output sucks!)
-- (also complete R diff. exp. analysis?)
+- multiqc
+- all indexes for visualization software
