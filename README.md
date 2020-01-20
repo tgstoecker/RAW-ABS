@@ -28,7 +28,7 @@ To activate the snakemake-tutorial environment, execute
 `conda activate RAW-ABS`
 
 Now you can use the installed tools and our workflow without any software dependency issues.
-For detailed options of snakemake see: 
+For detailed options of snakemake see: https://snakemake.readthedocs.io/en/v5.5.1/executable.html
 
 Should you want to remove the conda environment, execute
 `conda env remove -n RAW-ABS`
