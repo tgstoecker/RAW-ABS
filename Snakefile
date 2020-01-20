@@ -163,7 +163,10 @@ if config["sequencing_type"] == "single_end":
             chimJunctionOverhangMin = config["chimJunctionOverhangMin"],
             quantMode = config["quantMode"],
             twopassMode = config["twopassMode"],
-            chimOutType = config["chimOutType"]
+            chimOutType = config["chimOutType"],
+            outSAMtype = config["outSAMtype"],
+            sjdbOverhang = config["sjdbOverhang"],
+            outFilterMultimapScoreRange = config["outFilterMultimapScoreRange"]
         log:
             "logs/star/{sample}.log"
         shell:
@@ -195,6 +198,9 @@ if config["sequencing_type"] == "single_end":
             '--quantMode {params.quantMode}'
             '--twopassMode {params.twopassMode}'
             '--chimOutType {params.chimOutType}'
+            '--outSAMtype {params.outSAMtype}'
+            '--sjdbOverhang {params.sjdbOverhang}'
+            '--outFilterMultimapScoreRange {params.outFilterMultimapScoreRange}'
 
 
     rule multiqc:
@@ -319,7 +325,12 @@ if config["sequencing_type"] == "paired_end":
             chimJunctionOverhangMin = config["chimJunctionOverhangMin"],
             quantMode = config["quantMode"],
             twopassMode = config["twopassMode"],
-            chimOutType = config["chimOutType"]
+            chimOutType = config["chimOutType"],
+            outSAMtype = config["outSAMtype"],
+            sjdbOverhang = config["sjdbOverhang"],
+            outFilterMultimapScoreRange = config["outFilterMultimapScoreRange"]
+            
+            
         log:
             "logs/star/{sample}.log"
         params:
@@ -355,6 +366,9 @@ if config["sequencing_type"] == "paired_end":
             '--quantMode {params.quantMode}'
             '--twopassMode {params.twopassMode}'
             '--chimOutType {params.chimOutType}'
+            '--outSAMtype = {params.outSAMtype}'
+            '--sjdbOverhang = {params.sjdbOverhang}'
+            '--outFilterMultimapScoreRange = {params.outFilterMultimapScoreRange}'
 
 
     rule multiqc:
