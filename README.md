@@ -2,7 +2,7 @@
 # Alignment based workflow for Illumina Short reads
 
 
-# Setup
+# Setup:
 Install the Python 3 version of Miniconda.
 you can get it here: https://docs.conda.io/en/latest/miniconda.html
 
