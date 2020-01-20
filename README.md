@@ -1,9 +1,8 @@
 # RAW-ABS - RNAseq Analysis Workflow, Alignment BaSed 
-Alignment based workflow for Illumina Short reads
+# Alignment based workflow for Illumina Short reads
 
 
-alignment based (could also have second version that functions "alignment free" so e.g. salmon - however since these are all based on aligning to a transcriptome index -> sth. like my trinity workflow or stringtie would be necessary excluding cases, where a reference actually exist and we choose not to use it for some reason..)
-
+# Setup
 Install the Python 3 version of Miniconda.
 you can get it here: https://docs.conda.io/en/latest/miniconda.html
 
