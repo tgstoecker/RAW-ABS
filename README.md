@@ -46,6 +46,7 @@ Should you want to remove the conda environment, execute
 - FastQC on rRNA depleted RawReads
 - Trimming and FastQC on these trimmed Reads
 - alignment/mapping via STAR (including index) - outputs directly to sorted bam
-- featureCounts on alignment files
-- multiqc
+- duplicate removal via Picard MarkDuplicates
+- featureCounts on alignment files (with/without multimappers)
+- multiqc report of all steps
 - all indexes for visualization software
