@@ -1,6 +1,6 @@
 ### enter genome and gtf file names without extension/ending
-genome: Hordeum_vulgare.IBSC_v2.dna.toplevel
-annotation: Hordeum_vulgare.IBSC_v2.42
+genome: 
+annotation: 
 
 #### Single end or Paired end ####
 ### choose either SE or PE in the following option ###
