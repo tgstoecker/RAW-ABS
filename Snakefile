@@ -48,7 +48,7 @@ rule STAR_index:
         'STAR --runThreadN {params.threads} '
             '--runMode genomeGenerate '
             '--genomeDir {output} '
-            '--limitGenomeGenerateRAM {params.size}'
+            '--limitGenomeGenerateRAM {params.size} '
             '--genomeFastaFiles {input.fasta} '
             '--sjdbGTFfile {params.gtf} '
             '--sjdbOverhang {params.length}'
