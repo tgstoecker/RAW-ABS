@@ -46,6 +46,7 @@ trim.options: "SLIDINGWINDOW:4:20"
 
 ##change STAR's --sjdbOverhang option; ideal value here is read_length-1
 ##e.g.: 2x100b paired-end reads, the ideal value is 100-1=99; varying length? then, do this with the max length
+limitGenomeGenerateRAM: "90000000000"
 read_length_star_index: "99"
 
 
