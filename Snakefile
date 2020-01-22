@@ -39,7 +39,8 @@ rule STAR_index:
         extra = "",
         gtf = expand("FGS/{annotation}.gtf", annotation=config["annotation"]),
         threads= config["threads_star_index"],
-        length = config["read_length_star_index"]
+        length = config["read_length_star_index"],
+        size = config["limitGenomeGenerateRAM"]
     log:
         expand("logs/star_index_{genome}.log", genome=config["genome"])
     shell:
@@ -47,6 +48,7 @@ rule STAR_index:
         'STAR --runThreadN {params.threads} '
             '--runMode genomeGenerate '
             '--genomeDir {output} '
+            '--limitGenomeGenerateRAM {params.size}'
             '--genomeFastaFiles {input.fasta} '
             '--sjdbGTFfile {params.gtf} '
             '--sjdbOverhang {params.length}'
