@@ -73,8 +73,6 @@ chimJunctionOverhangMin: "20"
 quantMode: "-"
 twopassMode: "Basic"
 chimOutType: "Junctions"
-outSAMtype: "BAM SortedByCoordinate"
-sjdbOverhang: "99"
 outFilterMultimapScoreRange: "0"
 
 
