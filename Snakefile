@@ -19,6 +19,8 @@ rule all:
 #        directory(expand("FGS/{genome}", genome=config["genome"])),
         "FGS/rRNA.gtf",
         "FGS/rRNA.fa",
+        expand("rawreads_rRNA_removed/{sample}_{paired}.fq.gz", sample=SAMPLES, paired=[1, 2]),
+        expand("trimmed/{sample}.{mate}_paired.fq.gz", sample=SAMPLES, mate=["forward", "reverse"]),
         expand("star/{sample}.Aligned.sortedByCoord.out.bam.csi", sample=SAMPLES),
         expand("removed_duplicates_alignments/{sample}.dedup.bam.csi", sample=SAMPLES),
         "FC/with_dups_gene_level/counts.txt",
@@ -117,7 +119,8 @@ if config["sequencing_type"] == "single_end":
             # optional parameters
             extra="",
             compression_level="-9"
-        threads: 4
+        threads: 
+            4
         shell:
             "trimmomatic SE -threads {threads} {input} {output} {params.trimmer}"
 
@@ -278,7 +281,8 @@ if config["sequencing_type"] == "paired_end":
             # optional parameters
             extra="",
             compression_level="-9"
-        threads: 4
+        threads: 
+            4
         wrapper:
             "0.42.0/bio/trimmomatic/pe"
 
