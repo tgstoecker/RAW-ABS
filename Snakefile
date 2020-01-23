@@ -5,29 +5,20 @@ SAMPLES, = glob_wildcards(config['sample_names'])
 
 #### target rules ####
 
-rule all:
-    input:
-#        expand("fastqc/raw/{sample}_{paired}_fastqc.html", sample=SAMPLES, paired=[1, 2]),
-#        expand("fastqc/raw/{sample}_{paired}_fastqc.zip", sample=SAMPLES, paired=[1, 2]),
-#        expand("trimmed/{sample}.1.fq.gz", sample=SAMPLES, paired=[1, 2]),
-#        expand("trimmed/{sample}.2.fq.gz", sample=SAMPLES, paired=[1, 2]),
-#        expand("trimmed/{sample}.1.unpaired.fq.gz", sample=SAMPLES, paired=[1, 2]),
-#        expand("trimmed/{sample}.2.unpaired.fq.gz", sample=SAMPLES, paired=[1, 2]),
-#        expand("star/{sample}/Aligned.sortedByCoord.out.bam", sample=SAMPLES),
-#        expand("removed_duplicates_alignments/{sample}.dedup.bam", sample=SAMPLES),
-#        expand("removed_duplicates_alignments/{sample}.dedup.txt", sample=SAMPLES),
-#        directory(expand("FGS/{genome}", genome=config["genome"])),
-        "FGS/rRNA.gtf",
-        "FGS/rRNA.fa",
-        expand("rawreads_rRNA_removed/{sample}_{paired}.fq.gz", sample=SAMPLES, paired=[1, 2]),
-        expand("trimmed/{sample}.{mate}_paired.fq.gz", sample=SAMPLES, mate=["forward", "reverse"]),
-        expand("star/{sample}.Aligned.sortedByCoord.out.bam.csi", sample=SAMPLES),
-        expand("removed_duplicates_alignments/{sample}.dedup.bam.csi", sample=SAMPLES),
-        "FC/with_dups_gene_level/counts.txt",
-        "FC/with_dups_exon_level/counts.txt",
-        "FC/without_dups_gene_level/counts.txt",
-        "FC/without_dups_exon_level/counts.txt",
-        "multiqc/multiqc.html"
+if config["sequencing_type"] == "paired_end":
+    rule all:
+        input:
+            "FGS/rRNA.gtf",
+            "FGS/rRNA.fa",
+            expand("rawreads_rRNA_removed/{sample}_{paired}.fq.gz", sample=SAMPLES, paired=[1, 2]),
+            expand("trimmed/{sample}.{mate}_paired.fq.gz", sample=SAMPLES, mate=["forward", "reverse"]),
+            expand("star/{sample}.Aligned.sortedByCoord.out.bam.csi", sample=SAMPLES),
+            expand("removed_duplicates_alignments/{sample}.dedup.bam.csi", sample=SAMPLES),
+            "FC/with_dups_gene_level/counts.txt",
+            "FC/with_dups_exon_level/counts.txt",
+            "FC/without_dups_gene_level/counts.txt",
+            "FC/without_dups_exon_level/counts.txt",
+            "multiqc/multiqc.html"
 
 
 rule STAR_index:
@@ -169,8 +160,6 @@ if config["sequencing_type"] == "single_end":
             quantMode = config["quantMode"],
             twopassMode = config["twopassMode"],
             chimOutType = config["chimOutType"],
-            outSAMtype = config["outSAMtype"],
-            sjdbOverhang = config["sjdbOverhang"],
             outFilterMultimapScoreRange = config["outFilterMultimapScoreRange"]
         log:
             "logs/star/{sample}.log"
@@ -180,32 +169,30 @@ if config["sequencing_type"] == "single_end":
             '--readFilesIn {input.file} '
             '--readFilesCommand zcat '
             '--outSAMtype BAM SortedByCoordinate '
-            '--outFileNamePrefix {params.name} '
-            '--outBAMsortingThreadN {params.threads}'
-            '--outReadsUnmapped {params.outReadsUnmapped}'
-            '--outSAMattributes {params.outSAMattributes}'
-            '--outSJfilterOverhangMin {params.outSJfilterOverhangMin}'
-            '--outFilterMultimapNmax {params.outFilterMultimapNmax}'
-            '--outFilterScoreMin {params.outFilterScoreMin}'
-            '--outFilterMatchNminOverLread {params.outFilterMatchNminOverLread}'
-            '--outFilterMismatchNmax {params.outFilterMismatchNmax}'
-            '--outFilterMismatchNoverLmax {params.outFilterMismatchNoverLmax}'
-            '--alignIntronMin {params.alignIntronMin}'
-            '--alignIntronMax {params.alignIntronMax}'
-            '--alignMatesGapMax {params.alignMatesGapMax}'
-            '--alignSJoverhangMin {params.alignSJoverhangMin}'
-            '--alignSJDBoverhangMin {params.alignSJDBoverhangMin}'
-            '--alignSoftClipAtReferenceEnds {params.alignSoftClipAtReferenceEnds}'
-            '--chimSegmentMin {params.chimSegmentMin}'
-            '--chimScoreMin {params.chimScoreMin}'
-            '--chimScoreSeparation {params.chimScoreSeparation}'
-            '--chimJunctionOverhangMin {params.chimJunctionOverhangMin}'
-            '--quantMode {params.quantMode}'
-            '--twopassMode {params.twopassMode}'
-            '--chimOutType {params.chimOutType}'
-            '--outSAMtype {params.outSAMtype}'
-            '--sjdbOverhang {params.sjdbOverhang}'
-            '--outFilterMultimapScoreRange {params.outFilterMultimapScoreRange}'
+            '--outFileNamePrefix {params.name}  '
+            '--outBAMsortingThreadN {params.threads} '
+            '--outReadsUnmapped {params.outReadsUnmapped} '
+            '--outSAMattributes {params.outSAMattributes} '
+            '--outSJfilterOverhangMin {params.outSJfilterOverhangMin} '
+            '--outFilterMultimapNmax {params.outFilterMultimapNmax} '
+            '--outFilterScoreMin {params.outFilterScoreMin} '
+            '--outFilterMatchNminOverLread {params.outFilterMatchNminOverLread} '
+            '--outFilterMismatchNmax {params.outFilterMismatchNmax} '
+            '--outFilterMismatchNoverLmax {params.outFilterMismatchNoverLmax} '
+            '--alignIntronMin {params.alignIntronMin} '
+            '--alignIntronMax {params.alignIntronMax} '
+            '--alignMatesGapMax {params.alignMatesGapMax} '
+            '--alignSJoverhangMin {params.alignSJoverhangMin} '
+            '--alignSJDBoverhangMin {params.alignSJDBoverhangMin} '
+            '--alignSoftClipAtReferenceEnds {params.alignSoftClipAtReferenceEnds} '
+            '--chimSegmentMin {params.chimSegmentMin} '
+            '--chimScoreMin {params.chimScoreMin} '
+            '--chimScoreSeparation {params.chimScoreSeparation} '
+            '--chimJunctionOverhangMin {params.chimJunctionOverhangMin} '
+            '--quantMode {params.quantMode} '
+            '--twopassMode {params.twopassMode} '
+            '--chimOutType {params.chimOutType} '
+            '--outFilterMultimapScoreRange {params.outFilterMultimapScoreRange} '
 
 
     rule multiqc:
