@@ -52,4 +52,4 @@ Should you want to remove the conda environment, execute
 - all indexes for visualization software
 
 
-`snakemake --rulegraph | dot -Tsvg > rulegraph.svg
+`snakemake --rulegraph | dot -Tsvg > rulegraph.svg`
