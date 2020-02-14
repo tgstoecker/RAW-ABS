@@ -5,20 +5,11 @@ SAMPLES, = glob_wildcards(config['sample_names'])
 
 #### target rules ####
 
-if config["sequencing_type"] == "paired_end":
-    rule all:
-        input:
-            "FGS/rRNA.gtf",
-            "FGS/rRNA.fa",
-            expand("rawreads_rRNA_removed/{sample}_{paired}.fq.gz", sample=SAMPLES, paired=[1, 2]),
-            expand("trimmed/{sample}.{mate}_paired.fq.gz", sample=SAMPLES, mate=["forward", "reverse"]),
-            expand("star/{sample}.Aligned.sortedByCoord.out.bam.csi", sample=SAMPLES),
-            expand("removed_duplicates_alignments/{sample}.dedup.bam.csi", sample=SAMPLES),
-            "FC/with_dups_gene_level/counts.txt",
-            "FC/with_dups_exon_level/counts.txt",
-            "FC/without_dups_gene_level/counts.txt",
-            "FC/without_dups_exon_level/counts.txt",
-            "multiqc/multiqc.html"
+rule all:
+    input:
+        expand("star/{sample}.Aligned.sortedByCoord.out.bam.csi", sample=SAMPLES),
+        expand("removed_duplicates_alignments/{sample}.dedup.bam.csi", sample=SAMPLES),
+        "multiqc/multiqc.html"
 
 
 rule STAR_index:
@@ -110,8 +101,7 @@ if config["sequencing_type"] == "single_end":
             # optional parameters
             extra="",
             compression_level="-9"
-        threads: 
-            4
+        threads: config["threads_trimmomatic"]
         shell:
             "trimmomatic SE -threads {threads} {input} {output} {params.trimmer}"
 
@@ -131,68 +121,24 @@ if config["sequencing_type"] == "single_end":
 
     rule STAR:
         input:
-            file = "trimmed/{sample}.fq.gz",
+            fq1 = "trimmed/{sample}.fq.gz",
             dir = expand("FGS/{genome}", genome=config["genome"])
         output:
             # see STAR manual for additional output files - 
             "star/{sample}.Aligned.sortedByCoord.out.bam"
         params:
             name = "star/{sample}.",
-            threads = config["threads_star"],
-            outReadsUnmapped = config["outReadsUnmapped"],
-            outSAMattributes = config["outSAMattributes"],
-            outSJfilterOverhangMin = config["outSJfilterOverhangMin"],
-            outFilterMultimapNmax = config["outFilterMultimapNmax"],
-            outFilterScoreMin = config["outFilterScoreMin"],
-            outFilterMatchNminOverLread = config["outFilterMatchNminOverLread"],
-            outFilterMismatchNmax = config["outFilterMismatchNmax"],
-            outFilterMismatchNoverLmax = config["outFilterMismatchNoverLmax"],
-            alignIntronMin = config["alignIntronMin"],
-            alignIntronMax = config["alignIntronMax"],
-            alignMatesGapMax = config["alignMatesGapMax"],
-            alignSJoverhangMin = config["alignSJoverhangMin"],
-            alignSJDBoverhangMin = config["alignSJDBoverhangMin"],
-            alignSoftClipAtReferenceEnds = config["alignSoftClipAtReferenceEnds"],
-            chimSegmentMin = config["chimSegmentMin"],
-            chimScoreMin = config["chimScoreMin"],
-            chimScoreSeparation = config["chimScoreSeparation"],
-            chimJunctionOverhangMin = config["chimJunctionOverhangMin"],
-            quantMode = config["quantMode"],
-            twopassMode = config["twopassMode"],
-            chimOutType = config["chimOutType"],
-            outFilterMultimapScoreRange = config["outFilterMultimapScoreRange"]
+            rest = config["STAR"],
         log:
             "logs/star/{sample}.log"
+        threads: config["threads_star"]
         shell:
-            'STAR --runThreadN {params.threads} '
+            'STAR --runThreadN {threads} '
             '--genomeDir {input.dir} '
-            '--readFilesIn {input.file} '
+            '--readFilesIn {input.fq1} '
             '--readFilesCommand zcat '
-            '--outSAMtype BAM SortedByCoordinate '
-            '--outFileNamePrefix {params.name}  '
-            '--outBAMsortingThreadN {params.threads} '
-            '--outReadsUnmapped {params.outReadsUnmapped} '
-            '--outSAMattributes {params.outSAMattributes} '
-            '--outSJfilterOverhangMin {params.outSJfilterOverhangMin} '
-            '--outFilterMultimapNmax {params.outFilterMultimapNmax} '
-            '--outFilterScoreMin {params.outFilterScoreMin} '
-            '--outFilterMatchNminOverLread {params.outFilterMatchNminOverLread} '
-            '--outFilterMismatchNmax {params.outFilterMismatchNmax} '
-            '--outFilterMismatchNoverLmax {params.outFilterMismatchNoverLmax} '
-            '--alignIntronMin {params.alignIntronMin} '
-            '--alignIntronMax {params.alignIntronMax} '
-            '--alignMatesGapMax {params.alignMatesGapMax} '
-            '--alignSJoverhangMin {params.alignSJoverhangMin} '
-            '--alignSJDBoverhangMin {params.alignSJDBoverhangMin} '
-            '--alignSoftClipAtReferenceEnds {params.alignSoftClipAtReferenceEnds} '
-            '--chimSegmentMin {params.chimSegmentMin} '
-            '--chimScoreMin {params.chimScoreMin} '
-            '--chimScoreSeparation {params.chimScoreSeparation} '
-            '--chimJunctionOverhangMin {params.chimJunctionOverhangMin} '
-            '--quantMode {params.quantMode} '
-            '--twopassMode {params.twopassMode} '
-            '--chimOutType {params.chimOutType} '
-            '--outFilterMultimapScoreRange {params.outFilterMultimapScoreRange} '
+            '--outFileNamePrefix {params.name} '
+            '{params.rest} '          
 
 
     rule multiqc:
@@ -262,14 +208,11 @@ if config["sequencing_type"] == "paired_end":
         log:
             "logs/trimmomatic/{sample}.log"
         params:
-            #  list of trimmers (see manual)
-            #trimmer=["SLIDINGWINDOW:4:15"],
             trimmer={config["trim.options"]},
             # optional parameters
             extra="",
             compression_level="-9"
-        threads: 
-            4
+        threads: config["threads_trimmomatic"]
         wrapper:
             "0.42.0/bio/trimmomatic/pe"
 
@@ -295,73 +238,19 @@ if config["sequencing_type"] == "paired_end":
         output:
             # see STAR manual for additional output files -
             "star/{sample}.Aligned.sortedByCoord.out.bam"
-        params:
-            name = "star/{sample}.",
-            threads = config["threads_star"],
-            outReadsUnmapped = config["outReadsUnmapped"],
-            outSAMattributes = config["outSAMattributes"],
-            outSJfilterOverhangMin = config["outSJfilterOverhangMin"],
-            outFilterMultimapNmax = config["outFilterMultimapNmax"],
-            outFilterScoreMin = config["outFilterScoreMin"],
-            outFilterMatchNminOverLread = config["outFilterMatchNminOverLread"],
-            outFilterMismatchNmax = config["outFilterMismatchNmax"],
-            outFilterMismatchNoverLmax = config["outFilterMismatchNoverLmax"],
-            alignIntronMin = config["alignIntronMin"],
-            alignIntronMax = config["alignIntronMax"],
-            alignMatesGapMax = config["alignMatesGapMax"],
-            alignSJoverhangMin = config["alignSJoverhangMin"],
-            alignSJDBoverhangMin = config["alignSJDBoverhangMin"],
-            alignSoftClipAtReferenceEnds = config["alignSoftClipAtReferenceEnds"],
-            chimSegmentMin = config["chimSegmentMin"],
-            chimScoreMin = config["chimScoreMin"],
-            chimScoreSeparation = config["chimScoreSeparation"],
-            chimJunctionOverhangMin = config["chimJunctionOverhangMin"],
-            quantMode = config["quantMode"],
-            twopassMode = config["twopassMode"],
-            chimOutType = config["chimOutType"],
-            outSAMtype = config["outSAMtype"],
-            sjdbOverhang = config["sjdbOverhang"],
-            outFilterMultimapScoreRange = config["outFilterMultimapScoreRange"]
-            
-            
         log:
             "logs/star/{sample}.log"
+        threads: config["threads_star"]
         params:
-            # path to STAR reference genome index
-            #index=lambda wildcards: expand("FGS/{genome}", genome=config["genome"]),
-            #threads = config["threads_star"]
+            name = "star/{sample}.",
+            rest = config["STAR"],
         shell:
-            'STAR --runThreadN {params.threads} '
+            'STAR --runThreadN {threads} '
             '--genomeDir {input.dir} '
             '--readFilesIn {input.fq1} {input.fq2} '
             '--readFilesCommand zcat '
-            '--outSAMtype BAM SortedByCoordinate '
             '--outFileNamePrefix {params.name} '
-            '--outBAMsortingThreadN {params.threads}'
-            '--outReadsUnmapped {params.outReadsUnmapped}'
-            '--outSAMattributes {params.outSAMattributes}'
-            '--outSJfilterOverhangMin {params.outSJfilterOverhangMin}'
-            '--outFilterMultimapNmax {params.outFilterMultimapNmax}'
-            '--outFilterScoreMin {params.outFilterScoreMin}'
-            '--outFilterMatchNminOverLread {params.outFilterMatchNminOverLread}'
-            '--outFilterMismatchNmax {params.outFilterMismatchNmax}'
-            '--outFilterMismatchNoverLmax {params.outFilterMismatchNoverLmax}'
-            '--alignIntronMin {params.alignIntronMin}'
-            '--alignIntronMax {params.alignIntronMax}'
-            '--alignMatesGapMax {params.alignMatesGapMax}'
-            '--alignSJoverhangMin {params.alignSJoverhangMin}'
-            '--alignSJDBoverhangMin {params.alignSJDBoverhangMin}'
-            '--alignSoftClipAtReferenceEnds {params.alignSoftClipAtReferenceEnds}'
-            '--chimSegmentMin {params.chimSegmentMin}'
-            '--chimScoreMin {params.chimScoreMin}'
-            '--chimScoreSeparation {params.chimScoreSeparation}'
-            '--chimJunctionOverhangMin {params.chimJunctionOverhangMin}'
-            '--quantMode {params.quantMode}'
-            '--twopassMode {params.twopassMode}'
-            '--chimOutType {params.chimOutType}'
-            '--outSAMtype = {params.outSAMtype}'
-            '--sjdbOverhang = {params.sjdbOverhang}'
-            '--outFilterMultimapScoreRange = {params.outFilterMultimapScoreRange}'
+            '{params.rest} '
 
 
     rule multiqc:
@@ -441,20 +330,20 @@ rule featureCounts:
         without_dups_bams = expand("removed_duplicates_alignments/{sample}.dedup.bam", sample=SAMPLES)
     output:
         with_dups_gene_level="FC/with_dups_gene_level/counts.txt",
-        with_dups_exon_level="FC/with_dups_exon_level/counts.txt",
+        with_dups_transcript_level="FC/with_dups_transcript_level/counts.txt",
         without_dups_gene_level="FC/without_dups_gene_level/counts.txt",
-        without_dups_exon_level="FC/without_dups_exon_level/counts.txt",
+        without_dups_transcript_level="FC/without_dups_transcript_level/counts.txt",
         without_dups_gene_level_summary="FC/without_dups_gene_level/counts.txt.summary"
     params:
         gtf = expand("FGS/{annotation}.gtf", annotation=config["annotation"])
     log:
         with_dups_gene_level="logs/FC/with_dups/with_dups_featurecount_gene.log",
-        with_dups_exon_level="logs/FC/with_dups/with_dups_featurecount_exon.log",
-        without_dups_gene_level="logs/FC/with_dups/with_dups_featurecount_gene.log",
-        without_dups_exon_level="logs/FC/with_dups/with_dups_featurecount_exon.log"
-#config[xxxx]
+        with_dups_exon_level="logs/FC/with_dups/with_dups_featurecount_transcript.log",
+        without_dups_gene_level="logs/FC/without_dups/without_dups_featurecount_gene.log",
+        without_dups_exon_level="logs/FC/without_dups/without_dups_featurecount_transcript.log"
+    threads: config["threads_featureCounts"]
     shell:
-        "featureCounts -T 4 -O -M -t exon -g gene_id -a {params.gtf} -o {output.with_dups_gene_level} {input.with_dups_bams} 2> {log.with_dups_gene_level} && "
-        "featureCounts -T 4 -O -M -f -t exon -g gene_id -a {params.gtf} -o {output.with_dups_exon_level} {input.with_dups_bams} 2> {log.with_dups_exon_level} && "
-        "featureCounts -T 4 -O -t exon -g gene_id -a {params.gtf} -o {output.without_dups_gene_level} {input.without_dups_bams} 2> {log.without_dups_gene_level} && "
-        "featureCounts -T 4 -O -f -t exon -g gene_id -a {params.gtf} -o {output.without_dups_exon_level} {input.without_dups_bams} 2> {log.without_dups_exon_level}"
+        "featureCounts -T {threads} -p -O -M -t exon -g gene_id -a {params.gtf} -o {output.with_dups_gene_level} {input.with_dups_bams} 2> {log.with_dups_gene_level} && "
+        "featureCounts -T {threads} -p -O -M -t exon -g transcript_id -a {params.gtf} -o {output.with_dups_transcript_level} {input.with_dups_bams} 2> {log.with_dups_exon_level} && "
+        "featureCounts -T {threads} -p -O -t exon -g gene_id -a {params.gtf} -o {output.without_dups_gene_level} {input.without_dups_bams} 2> {log.without_dups_gene_level} && "
+        "featureCounts -T {threads} -p -O -t exon -g transcript_id -a {params.gtf} -o {output.without_dups_transcript_level} {input.without_dups_bams} 2> {log.without_dups_exon_level}"
