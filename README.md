@@ -53,3 +53,4 @@ Should you want to remove the conda environment, execute
 
 
 `snakemake --rulegraph | dot -Tsvg > rulegraph.svg`
+![Alt text](./rulegraph.svg)
