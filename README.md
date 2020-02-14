@@ -50,3 +50,6 @@ Should you want to remove the conda environment, execute
 - featureCounts on alignment files (with/without multimappers)
 - multiqc report of all steps
 - all indexes for visualization software
+
+
+`snakemake --rulegraph | dot -Tsvg > rulegraph.svg
