@@ -44,6 +44,8 @@ genome_size: "big_genome"
 ## 2.) do the same to the two index steps at the end of the file and also change samtools index flag -c into -b  ##
 
 #choose -b for bai index and -c for .csi index - .bai index will lead to errors if used with genomes whose contiqs exceed the 2^29 size limit (so barley, wheat, etc.!!) 
+#also if you change to .bai all occurences in the Snake file have to be changed to .bai as well
+#better to just leave this as is
 index_type: -c
 
 
