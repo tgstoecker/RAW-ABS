@@ -219,7 +219,7 @@ if config["sequencing_type"] == "paired_end":
 
     rule trimmed_fastqc:
         input:
-            expand("trimmed/{sample}.{mate}_paired.fq.gz", sample=SAMPLES, mate=["forward", "reverse"])
+            "trimmed/{sample}.{mate}_paired.fq.gz"
         output:
             html="fastqc/trimmed/{sample}.{mate}_paired_fastqc.html",
             zip="fastqc/trimmed/{sample}.{mate}_paired_fastqc.zip" # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
