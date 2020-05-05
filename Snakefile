@@ -184,7 +184,7 @@ if config["sequencing_type"] == "paired_end":
 
     rule fastqc:
         input:
-            expand("rawreads_rRNA_removed/{sample}_{paired}.fq.gz", sample=SAMPLES, paired=[1, 2])
+            "rawreads_rRNA_removed/{sample}_{paired}.fq.gz"
         output:
             html="fastqc/raw/{sample}_{paired}_fastqc.html",
             zip="fastqc/raw/{sample}_{paired}_fastqc.zip" # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
