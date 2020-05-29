@@ -38,8 +38,9 @@ Should you want to remove the conda environment, execute
 2) Move, copy or link your gzipped fastq files to the rawreads directory
 3) All options of the workflow can easily be controlled via the config.yaml file
   - rename your fastq files to follow the naming scheme: xxxx_1.fq.gz for PE reads!
-4) When all this is done execute `snakemake -np` to check if the workflow works and perform a dry-run
-5) To start the workflow execute `snakemake --cores xx` and set the total amount of threads to be used
+4) Check whether or not your annotation includes rRNA entries - if not exclude the bbduk rules from the workflow and also change the paths of the fastqc and trimmomatic inputs to use the rawreads!  
+5) When all this is done execute `snakemake -np` to check if the workflow works and perform a dry-run  
+6) To start the workflow execute `snakemake --cores xx` and set the total amount of threads to be used  
 
 # What it does:
 - Removal of rRNA reads via bbduk
