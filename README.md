@@ -12,6 +12,7 @@ The second major output is a multiQC html report aggregating fastqc, trimmomatic
 If you use RAW-ABS in your analysis:  
 1.) awesome! I am glad you found it useful  
 2.) be a darling and please cite the repository ;D  
+Tyll Stöcker. (2020, May 29). tgstoecker/RAW-ABS v1.0 (Version v1.0). Zenodo. http://doi.org/10.5281/zenodo.3865747
 
 
 # Setup:
