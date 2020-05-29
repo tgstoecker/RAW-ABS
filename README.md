@@ -1,3 +1,7 @@
+
+
+[![DOI](https://zenodo.org/badge/220555640.svg)](https://zenodo.org/badge/latestdoi/220555640)
+
 # RAW-ABS - RNAseq Analysis Workflow, Alignment BaSed 
 # Alignment based workflow for Illumina Short reads
 
