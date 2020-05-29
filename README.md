@@ -1,6 +1,15 @@
 # RAW-ABS - RNAseq Analysis Workflow, Alignment BaSed 
 # Alignment based workflow for Illumina Short reads
 
+This workflow is a quick and easy solution for performing RNA-seq data quality checking and handling before downstream analyses (e.g. Differential Expression analysis) in R, etc.  
+Using the conda environment it is ready to use very quickly and probably requires only few modifications for most use-cases.  
+Future updates will likely include installation of software during run-time.  
+Downstream analyses are not included since RAW-ABS purpose is to fit a broad range of scenarios (different software) that might come later and can make use of the featureCounts produced count matrixes on gene and transcript level.  
+The second major output is a multiQC html report aggregating fastqc, trimmomatic, picard, STAR and featureCounts stats.
+If you use RAW-ABS in your analysis:  
+1.) awesome! I am glad you found it useful  
+2.) be a darling and please cite the repository ;D  
+
 
 # Setup:
 Install the Python 3 version of Miniconda.
