@@ -56,8 +56,8 @@ Should you want to remove the conda environment, execute
 6) To start the workflow execute `snakemake --cores xx` and set the total amount of threads to be used  
 
 # What it does:
-- Removal of rRNA reads via bbduk
-- FastQC on rRNA depleted RawReads
+- (Removal of rRNA reads via bbduk)
+- FastQC on (rRNA depleted) RawReads
 - Trimming and FastQC on these trimmed Reads
 - alignment/mapping via STAR (including index) - outputs directly to sorted bam
 - duplicate removal via Picard MarkDuplicates
